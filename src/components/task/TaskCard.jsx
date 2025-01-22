@@ -1,8 +1,15 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import { deleteTask } from "@/api/tasks";
 
-const TaskCard = ({ task, onEdit, onDelete }) => {
+const TaskCard = ({ task }) => {
+    const handleDelete = () =>{
+        if (window.confirm(`Are you sure you want to delete "${task.title}"?`)) {
+            deleteTask(task._id)
+          }
+    }
+
   return (
     <Card className="shadow-md">
       <CardHeader>
@@ -14,10 +21,10 @@ const TaskCard = ({ task, onEdit, onDelete }) => {
         <p className="text-gray-500 text-sm">Created: {task.created_at}</p>
       </CardContent>
       <CardFooter>
-        <Button variant="outline" className="mx-2" onClick={onEdit}>
+        <Button variant="outline" className="mx-2">
           Edit
         </Button>
-        <Button variant="destructive" onClick={onDelete}>
+        <Button variant="destructive" onClick={handleDelete}>
           Delete
         </Button>
       </CardFooter>
