@@ -3,12 +3,22 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { deleteTask } from "@/api/tasks";
 
-const TaskCard = ({ task }) => {
-    const handleDelete = () =>{
-        if (window.confirm(`Are you sure you want to delete "${task.title}"?`)) {
-            deleteTask(task._id)
-          }
+const TaskCard = ({ task, onDelete }) => {
+  const handleDelete = () => {
+    if (window.confirm(`Are you sure you want to delete "${task.title}"?`)) {
+        deleteTask(task._id)
+            .then(() => {
+                onDelete(task._id); // Update the parent state
+            })
+            .catch((error) => {
+                console.error("Error deleting task:", error);
+            });
     }
+};
+
+const handleEdit = () => {
+  
+}
 
   return (
     <Card className="shadow-md">
@@ -21,7 +31,7 @@ const TaskCard = ({ task }) => {
         <p className="text-gray-500 text-sm">Created: {task.created_at}</p>
       </CardContent>
       <CardFooter>
-        <Button variant="outline" className="mx-2">
+        <Button variant="outline" className="mx-2" onClick={handleEdit}>
           Edit
         </Button>
         <Button variant="destructive" onClick={handleDelete}>

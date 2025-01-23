@@ -1,4 +1,5 @@
 import React, { createContext, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
 export const AuthContext = createContext();
 
@@ -7,8 +8,10 @@ const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
 
   const login = (userData) => {
-    setUser(userData.user);
+    console.log(userData)
     setToken(userData.token);
+    const decoded = jwtDecode(token);
+    setUser(decoded.userId);
     localStorage.setItem("token", userData.token); // Store token locally
   };
 

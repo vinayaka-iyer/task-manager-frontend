@@ -30,15 +30,19 @@ const TasksPage = () => {
   if (loading) return <p>Loading tasks...</p>;
   if (error) return <p>Error: {error}</p>;
 
+  const handleDelete = (taskId) => {
+    setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
+};
+
   return (
-    <div className="w-1/3 mx-auto">
+    <div className="md:w-1/3 mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Your Tasks</h1>
       {tasks.length === 0 ? (
         <p>No tasks found.</p>
       ) : (
         <ul className="space-y-4">
           {tasks.map((task) => (
-            <TaskCard key={task.id} task={task}/>
+            <TaskCard key={task.id} task={task} onDelete={handleDelete}/>
           ))}
         </ul>
       )}

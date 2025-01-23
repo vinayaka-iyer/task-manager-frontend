@@ -53,3 +53,20 @@ export const deleteTask = async (id) => {
       alert("Failed to delete the task.");
     }
   };
+
+ // Create a task
+export const createTask = async (data) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(`${API_BASE_URL}/tasks/`,
+        data ,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (err) {
+      console.error("Error creating task:", err);
+      alert("Failed to create the task.");
+    }
+  };

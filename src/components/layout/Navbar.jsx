@@ -5,6 +5,7 @@ import { AuthContext } from "../../context/AuthContext";
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  console.log(user)
 
   const handleLogout = () => {
     logout();
@@ -19,6 +20,7 @@ const Navbar = () => {
           {user ? (
             <>
               <Link to="/tasks" className="mx-2">Tasks</Link>
+              <Link to="/tasks/create" className="mx-2">Create Task</Link>
               <button onClick={handleLogout} className="mx-2">Logout</button>
             </>
           ) : (
