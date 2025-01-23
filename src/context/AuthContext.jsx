@@ -9,13 +9,13 @@ const AuthProvider = ({ children }) => {
 
   const login = (userData) => {
     setToken(userData.token);
-    const decoded = jwtDecode(token);
+    const decoded = jwtDecode(userData.token); // IMPORTANT: Do it like this!
     setUser(decoded.userId);
     localStorage.setItem("token", userData.token); // Store token locally
     localStorage.setItem("user", decoded.userId); // Store user locally
   };
 
-  // Fix so that user context isn't lost on reload
+  // FIX: so that user context isn't lost on reload
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -28,6 +28,7 @@ const AuthProvider = ({ children }) => {
     setUser(null);
     setToken(null);
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
   };
 
   return (

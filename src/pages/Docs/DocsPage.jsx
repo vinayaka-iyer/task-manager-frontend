@@ -1,5 +1,5 @@
 import React from 'react'
-import MarkdownRenderer from "../../components/MardownRenderer";
+import MarkdownRenderer from "./MardownRenderer";
 
 export const DocsPage = () => {
     return(

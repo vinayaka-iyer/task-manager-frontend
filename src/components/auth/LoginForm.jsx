@@ -20,10 +20,11 @@ const LoginForm = () => {
       alert("Login successful");
       navigate("/tasks"); // Redirect to tasks page
     } catch (error) {
-      console.error(error.response?.data?.message || "Login failed");
+      console.log(error.response?.data?.message || "Login failed");
       alert("Error: Login failed.");
     }
   };
+
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">

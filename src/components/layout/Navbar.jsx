@@ -9,13 +9,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Menu } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import ThemeToggle from "@/components/theme-toggle";
+import ThemeToggle from "@/components/theme/theme-toggle";
 import { Button } from "@/components/ui/button";
 
   const Navbar = () => {
     const { user, logout } = useContext(AuthContext);
     const navigate = useNavigate();
-    console.log(user)
 
     const handleLogout = () => {
       logout();
@@ -51,7 +50,7 @@ import { Button } from "@/components/ui/button";
                     Login
                   </Button> }
   
-          <div className="flex md:hidden mr-2 items-center gap-2">
+          <div className="flex md:hidden mr-2 items-center gap-2 ">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
               </DropdownMenuTrigger>
@@ -60,20 +59,25 @@ import { Button } from "@/components/ui/button";
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="icon">
-                  <Menu className="h-5 w-5 rotate-0 scale-100" />
+                  <Menu className="h-5 w-5 rotate-0 scale-100 " />
                 </Button>
               </DropdownMenuTrigger>
-  
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>
-                <Link to="/tasks">Tasks</Link>
+              <Link to="/tasks">
+                <DropdownMenuItem >
+                  Tasks
                 </DropdownMenuItem>
+                </Link>
+                <Link to="/tasks/create">
                 <DropdownMenuItem>
-                <Link to="/tasks/create">Create</Link>
+                  Create
                 </DropdownMenuItem>
+                </Link>
+                <Link to="/docs">
                 <DropdownMenuItem>
-                <Link to="/docs">Docs</Link>
+                  Docs
                 </DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem>
                   {user ?  <Button onClick={handleLogout} variant="secondary" className="w-full text-sm">
                     Logout

@@ -3,7 +3,7 @@ import Markdown from 'react-markdown'
 import remarkGfm from "remark-gfm";
 import "github-markdown-css";
 import rehypeHighlight from "rehype-highlight";
-import { useTheme } from "./theme-provider";
+import { useTheme } from "../../components/theme/theme-provider";
 
 
 
@@ -63,8 +63,8 @@ const MarkdownRenderer = () => {
     }, []);
 
     return (
-        <div className="p-10 md:w-1/2 mx-auto">
-            <Markdown className="markdown-body"  remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>   
+        <div className="p-10 sm:w-1/2 mx-auto">
+            <Markdown className="markdown-body sm:p-5 p-2"  remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>   
                 {markdownContent}
             </Markdown>
         </div>
