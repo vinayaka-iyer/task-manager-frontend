@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getTasks } from "../../api/tasks";
 import TaskCard from "@/components/task/TaskCard";
+import { Button } from "@/components/ui/button";
 
 const TasksPage = () => {
   const [tasks, setTasks] = useState([]); // State to hold tasks
@@ -35,7 +36,7 @@ const TasksPage = () => {
 };
 
   return (
-    <div className="md:w-1/3 mx-auto p-4">
+    <div className="md:w-1/2 mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">Your Tasks</h1>
       {tasks.length === 0 ? (
         <p>No tasks found.</p>
@@ -48,20 +49,18 @@ const TasksPage = () => {
       )}
       {/* Pagination Controls */}
       <div className="flex justify-between mt-4">
-        <button
-          className="bg-gray-300 px-4 py-2 rounded"
+        <Button
           disabled={page === 1}
           onClick={() => setPage(page - 1)}
         >
           Prev
-        </button>
-        <button
-          className="bg-gray-300 px-4 py-2 rounded"
+        </Button>
+        <Button
           disabled ={page === pages}
           onClick={() => setPage(page + 1)}
         >
           Next
-        </button>
+        </Button>
       </div>
     </div>
   );

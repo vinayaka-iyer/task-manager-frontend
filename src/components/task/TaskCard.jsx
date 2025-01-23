@@ -17,7 +17,7 @@ const TaskCard = ({ task, onDelete }) => {
 };
 
 const handleEdit = () => {
-  
+
 }
 
   return (
@@ -31,7 +31,7 @@ const handleEdit = () => {
         <p className="text-gray-500 text-sm">Created: {task.created_at}</p>
       </CardContent>
       <CardFooter>
-        <Button variant="outline" className="mx-2" onClick={handleEdit}>
+        <Button variant="secondary" className="mx-2" onClick={handleEdit}>
           Edit
         </Button>
         <Button variant="destructive" onClick={handleDelete}>
