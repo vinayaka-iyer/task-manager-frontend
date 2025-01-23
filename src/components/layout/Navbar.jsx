@@ -45,9 +45,11 @@ import { Button } from "@/components/ui/button";
         </ul>
   
         <div className="flex items-center">
-          <Button onClick={() => navigate('/login')} variant="secondary" className="hidden md:block md:mx-2 px-2">
-            Login
-          </Button>
+        {user ?  <Button onClick={handleLogout} variant="secondary" className="w-full text-sm mr-2 hidden md:block">
+                    Logout
+                  </Button> :  <Button onClick={() => navigate('/login')} variant="secondary" className="w-full text-sm mr-2 hidden md:block">
+                    Login
+                  </Button> }
   
           <div className="flex md:hidden mr-2 items-center gap-2">
             <DropdownMenu>
@@ -73,9 +75,12 @@ import { Button } from "@/components/ui/button";
                 <Link to="/docs">Docs</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <Button onClick={() => navigate('/login')} variant="secondary" className="w-full text-sm">
+                  {user ?  <Button onClick={handleLogout} variant="secondary" className="w-full text-sm">
+                    Logout
+                  </Button> :  <Button onClick={() => navigate('/login')} variant="secondary" className="w-full text-sm">
                     Login
-                  </Button>
+                  </Button> }
+                 
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

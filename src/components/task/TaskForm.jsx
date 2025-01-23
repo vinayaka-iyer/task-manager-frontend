@@ -1,5 +1,6 @@
 "use client"
 import {
+  useEffect,
   useState
 } from "react"
 import { useNavigate } from "react-router-dom"
@@ -41,7 +42,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select"
-import { createTask } from "@/api/tasks"
+import { createTask, editTask, getTask } from "@/api/tasks"
 
 const formSchema = z.object({
   title: z.string().min(1, {
@@ -51,7 +52,7 @@ const formSchema = z.object({
   status: z.string().default('Pending')
 });
 
-export default function TaskForm() {
+export default function TaskForm({type, task, onSubmitSuccess}) {
   const navigate = useNavigate()
 
   const form = useForm({
@@ -62,12 +63,11 @@ export default function TaskForm() {
   function onSubmit(values) {
     try {
       console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
-      handleCreate(values)
+      if (type === "create"){
+        handleCreate(values)
+      } else {
+        handleSave(values, task)
+      }
     } catch (error) {
       console.error("Form submission error", error);
       toast.error("Failed to submit the form. Please try again.");
@@ -78,17 +78,59 @@ export default function TaskForm() {
       if (window.confirm(`Are you sure you want to create "${data.title}" task?`)) {
           createTask(data)
               .then(() => {
-                  navigate('/tasks') 
+                  navigate('/tasks')
+                  toast(
+                    <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+                      Task created succesffully!
+                    </pre>
+                  ); 
               })
               .catch((error) => {
                   console.error("Error creating task:", error);
               });
       }
   };
+  
+  const handleSave = (data, task) => {
+    editTask(data, task)
+        .then(() => {
+          // Simulate successful submission
+          setTimeout(() => {
+            onSubmitSuccess(); // Close the dialog upon success
+        }, 500);
+          toast(
+            <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+              Task edited succesffully!
+            </pre>
+          );
+        })
+        .catch((error) => {
+            console.error("Error creating task:", error);
+            toast.error("Failed to edit the task. Please try again.");
+        });
+}
 
+const fetchTask = async (id) => {
+  try {
+      const data = await getTask(id);
+      form.reset({
+          title: data.title,
+          description: data.description,
+          status: data.status
+      });
+  } catch (err) {
+      console.error("Error fetching task:", err);
+  }
+};
+
+useEffect(() => {
+  if (task) {
+      fetchTask(task._id); // Fetch and set the task data
+  }
+}, []); // Re-run when taskId changes
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-3xl mx-auto p-5 border rounded-md">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mx-auto p-5 border rounded-md w-full">
         
         <FormField
           control={form.control}
@@ -134,7 +176,7 @@ export default function TaskForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Status</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue="Pending">
+              <Select  {...field} onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Status" />
@@ -151,7 +193,7 @@ export default function TaskForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        {type === "create"? <Button type="submit">Submit</Button> :  <Button type="submit">Save</Button> }
       </form>
     </Form>
   )

@@ -70,3 +70,20 @@ export const createTask = async (data) => {
       alert("Failed to create the task.");
     }
   };
+
+ // Edit a task
+export const editTask = async (data, task) => {
+  try {
+    const token = localStorage.getItem("token");
+    await axios.put(`${API_BASE_URL}/tasks/${task._id}`,
+      data ,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (err) {
+    console.error("Error creating task:", err);
+    alert("Failed to create the task.");
+  }
+};

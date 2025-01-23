@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { deleteTask } from "@/api/tasks";
+import { EditTask } from "./EditTask";
 
 const TaskCard = ({ task, onDelete }) => {
   const handleDelete = () => {
@@ -16,10 +17,6 @@ const TaskCard = ({ task, onDelete }) => {
     }
 };
 
-const handleEdit = () => {
-
-}
-
   return (
     <Card className="shadow-md">
       <CardHeader>
@@ -31,9 +28,10 @@ const handleEdit = () => {
         <p className="text-gray-500 text-sm">Created: {task.created_at}</p>
       </CardContent>
       <CardFooter>
-        <Button variant="secondary" className="mx-2" onClick={handleEdit}>
+        {/* <Button variant="secondary" className="mx-2" onClick={handleEdit}>
           Edit
-        </Button>
+        </Button> */}
+        <EditTask task={task} />
         <Button variant="destructive" onClick={handleDelete}>
           Delete
         </Button>
