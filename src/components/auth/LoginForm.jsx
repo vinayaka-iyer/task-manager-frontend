@@ -19,7 +19,7 @@ const LoginForm = () => {
       console.log(credentials)
       const data = await loginUser( credentials )
       const decoded = jwtDecode(data.token);
-      dispatch(login({ token: data.token, user: decoded.userId })); // Dispatch login action
+      dispatch(login({ token: data.token, user: decoded.userId, username:decoded.username })); // Dispatch login action
       alert("Login successful");
       navigate("/tasks"); // Redirect to tasks page
     } catch (error) {

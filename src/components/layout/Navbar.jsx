@@ -15,7 +15,7 @@ import { logout } from '../../redux/authSlice';
 
 
   const Navbar = () => {
-    const { user, token } = useSelector((state) => state.auth);
+    const { user, username } = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -48,12 +48,12 @@ import { logout } from '../../redux/authSlice';
   
         <div className="flex items-center">
         {user ?
-        <><h1>Welcome, {user}</h1>
-         <Button onClick={handleLogout} variant="secondary" className="w-full text-sm mr-2 hidden md:block">
+        <><Button variant="outline" className="text-sm w-full mr-2 hidden md:block">Welcome {username}</Button>
+         <Button onClick={handleLogout} className="w-full text-sm mr-2 hidden md:block">
                     Logout
         </Button>
         </>  
-        :  <Button onClick={() => navigate('/login')} variant="secondary" className="w-full text-sm mr-2 hidden md:block">
+        :  <Button onClick={() => navigate('/login')} className="w-full text-sm mr-2 hidden md:block">
                     Login
                   </Button> }
   
@@ -70,6 +70,11 @@ import { logout } from '../../redux/authSlice';
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+              {user &&
+                <DropdownMenuItem>
+                <Button variant="outline" className="w-full text-sm">Welcome {username}</Button>
+                </DropdownMenuItem>
+              }
               <Link to="/tasks">
                 <DropdownMenuItem >
                   Tasks
