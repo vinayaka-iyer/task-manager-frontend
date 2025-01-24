@@ -1,22 +1,25 @@
 import React, { useState, useContext } from "react";
 import { loginUser } from "../../api/auth";
-import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useDispatch } from "react-redux";
+import { login } from '../../redux/authSlice';
+import { jwtDecode } from 'jwt-decode';
 
 const LoginForm = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const { login } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const data = await loginUser({ username, password });
-      login(data); // Save user and token
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    try{
+      console.log(credentials)
+      const data = await loginUser( credentials )
+      const decoded = jwtDecode(data.token);
+      dispatch(login({ token: data.token, user: decoded.userId })); // Dispatch login action
       alert("Login successful");
       navigate("/tasks"); // Redirect to tasks page
     } catch (error) {
@@ -25,16 +28,15 @@ const LoginForm = () => {
     }
   };
 
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleLogin} className="space-y-4">
       <div>
         <Label htmlFor="username">Username</Label>
         <Input
           id="username"
           type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={credentials.username}
+          onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
           placeholder="Enter your username"
           required
         />
@@ -44,8 +46,8 @@ const LoginForm = () => {
         <Input
           id="password"
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={credentials.password}
+          onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
           placeholder="Enter your password"
           required
         />

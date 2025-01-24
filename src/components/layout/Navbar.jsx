@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,13 +10,17 @@ import { Menu } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import ThemeToggle from "@/components/theme/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from '../../redux/authSlice';
+
 
   const Navbar = () => {
-    const { user, logout } = useContext(AuthContext);
+    const { user, token } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleLogout = () => {
-      logout();
+      dispatch(logout())
       navigate("/login");
   };
     return (
@@ -44,9 +47,13 @@ import { Button } from "@/components/ui/button";
         </ul>
   
         <div className="flex items-center">
-        {user ?  <Button onClick={handleLogout} variant="secondary" className="w-full text-sm mr-2 hidden md:block">
+        {user ?
+        <><h1>Welcome, {user}</h1>
+         <Button onClick={handleLogout} variant="secondary" className="w-full text-sm mr-2 hidden md:block">
                     Logout
-                  </Button> :  <Button onClick={() => navigate('/login')} variant="secondary" className="w-full text-sm mr-2 hidden md:block">
+        </Button>
+        </>  
+        :  <Button onClick={() => navigate('/login')} variant="secondary" className="w-full text-sm mr-2 hidden md:block">
                     Login
                   </Button> }
   
