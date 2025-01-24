@@ -19,7 +19,7 @@ const authSlice = createSlice({
       localStorage.setItem('user', user);
       localStorage.setItem('username', username);
     },
-    logout: (state) => {
+    logout: (state, action) => {
       state.token = null;
       state.user = null;
       state.username = null
@@ -27,8 +27,15 @@ const authSlice = createSlice({
       localStorage.removeItem('user');
       localStorage.removeItem('username')
     },
+    register: (state, action) => {
+      const {username, password} = action.payload
+    }
   },
 });
 
-export const { login, logout } = authSlice.actions; // Export actions
+export const { login, logout, register } = authSlice.actions; // Export actions
 export default authSlice.reducer; // Export reducer
+
+export const selectCurrentUser = (state) => state.auth.user
+export const selectCurrentUsername = (state) => state.auth.username
+export const selectCurrentToken = (state) => state.auth.token

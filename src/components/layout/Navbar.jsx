@@ -11,11 +11,12 @@ import { Card } from "@/components/ui/card";
 import ThemeToggle from "@/components/theme/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from '../../redux/authSlice';
+import { logout, selectCurrentUser, selectCurrentUsername } from '../../redux/authSlice';
 
 
   const Navbar = () => {
-    const { user, username } = useSelector((state) => state.auth);
+    const user = useSelector(selectCurrentUser)
+    const username = useSelector(selectCurrentUsername)
     const dispatch = useDispatch();
     const navigate = useNavigate();
 

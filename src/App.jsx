@@ -9,6 +9,7 @@ import { ThemeProvider } from "./components/theme/theme-provider";
 import { DocsPage } from "./pages/Docs/DocsPage";
 import { Provider } from "react-redux";
 import store from './redux/store';
+import RequireAuth from "./services/auth/RequireAuth";
 
 
 function App() {
@@ -17,15 +18,19 @@ function App() {
       <ThemeProvider defaultTheme="dark" storageKey="ui-theme">
         <Provider store={store}>
           <Router>
-            <RootLayout >
               <Routes>
-                <Route path="/tasks" element={<TasksPage />} />
-                <Route path="/tasks/create" element={<CreateTaskPage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/docs" element={<DocsPage />} />
+                <Route path='/' element={<RootLayout />}>
+                {/* protected routes */}
+                <Route element={<RequireAuth />}>
+                  <Route path="/tasks" element={<TasksPage />} />
+                  <Route path="/tasks/create" element={<CreateTaskPage />} />
+                  </Route>
+                  {/* public routes */}
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/docs" element={<DocsPage />} />
+                </Route>
               </Routes>
-            </RootLayout>
           </Router>
           </Provider>
       </ThemeProvider>  

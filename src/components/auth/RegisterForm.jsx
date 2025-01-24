@@ -1,19 +1,27 @@
 import React, { useState } from "react";
-import { registerUser } from "../../api/auth";
+// import { registerUser } from "../../api/auth";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import { register } from "../../redux/authSlice";
+import { useRegisterMutation } from "../../services/auth/authApiSlice";
+import { useDispatch } from "react-redux";
+
 const RegisterForm = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+
+  const [registerMutation, {isLoading}] = useRegisterMutation()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await registerUser({ username, password });
+      // await registerUser({ username, password });
+      const data = await registerMutation( credentials ).unwrap()
+      dispatch(register(credentials))
       alert("User registered successfully");
       navigate("/login");
     } catch (error) {
@@ -29,8 +37,8 @@ const RegisterForm = () => {
         <Input
           id="username"
           type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={credentials.username}
+          onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
           placeholder="Enter your username"
           required
         />
@@ -40,8 +48,8 @@ const RegisterForm = () => {
         <Input
           id="password"
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={credentials.password}
+          onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
           placeholder="Enter your password"
           required
         />
