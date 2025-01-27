@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react"
 import { login ,logout} from '../redux/authSlice'
 
 const baseQuery = fetchBaseQuery({
-    baseUrl : 'http://localhost:8000/api',
+    baseUrl : 'https://task-manager-eight-olive.vercel.app/api',
     credentials: "include",
     prepareHeaders: (headers, {getState} ) => {
         const token = getState().auth.token
