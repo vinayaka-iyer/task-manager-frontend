@@ -8,14 +8,15 @@ const TasksPage = () => {
   const [loading, setLoading] = useState(true); // State for loading status
   const [error, setError] = useState(null); // State for error
   const [page, setPage] = useState(1); // Current page
-  const [pages, setPages] = useState(1) // Total pages
+  const [pages, setPages] = useState(1); // Total pages
   const [limit] = useState(8); // Tasks per page
+  const [reload, setReload] = useState(false);
 
   const fetchTasks = async () => {
     try {
       setLoading(true);
       const data = await getTasks(page, limit);
-      setPages(data.pages)
+      setPages(data.pages);
       setTasks(data.tasks);
     } catch (err) {
       setError(err);
@@ -26,14 +27,14 @@ const TasksPage = () => {
 
   useEffect(() => {
     fetchTasks();
-  }, [page]); // Refetch tasks when page changes
+  }, [page, reload]); // Refetch tasks when page changes
 
   if (loading) return <p>Loading tasks...</p>;
   if (error) return <p>Error: {error}</p>;
 
   const handleDelete = (taskId) => {
     setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
-};
+  };
 
   return (
     <div className="md:w-1/2 mx-auto p-4">
@@ -43,22 +44,21 @@ const TasksPage = () => {
       ) : (
         <ul className="space-y-4">
           {tasks.map((task) => (
-            <TaskCard key={task.id} task={task} onDelete={handleDelete}/>
+            <TaskCard
+              key={task.id}
+              task={task}
+              onDelete={handleDelete}
+              setReload={setReload}
+            />
           ))}
         </ul>
       )}
       {/* Pagination Controls */}
       <div className="flex justify-between mt-4">
-        <Button
-          disabled={page === 1}
-          onClick={() => setPage(page - 1)}
-        >
+        <Button disabled={page === 1} onClick={() => setPage(page - 1)}>
           Prev
         </Button>
-        <Button
-          disabled ={page === pages}
-          onClick={() => setPage(page + 1)}
-        >
+        <Button disabled={page === pages} onClick={() => setPage(page + 1)}>
           Next
         </Button>
       </div>
